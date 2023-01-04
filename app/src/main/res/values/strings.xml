@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Sleep Timer</string>
+    <string name="selected_extend">Selected extend time:</string>
+
+    <string-array name="Languages">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+    </string-array>
 </resources>

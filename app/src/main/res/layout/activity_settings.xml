@@ -17,20 +17,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="?attr/homeAsUpIndicator" />
 
-    <EditText
-        android:id="@+id/editTextNumberSigned"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="97dp"
-        android:layout_marginEnd="104dp"
-        android:layout_marginBottom="84dp"
-        android:ems="10"
-        android:inputType="numberSigned"
-        android:text="Temps extend"
-        android:textColor="#FFFFFF"
+    <Spinner
+        android:id="@+id/spinnerExtend"
+        android:layout_width="245dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="83dp"
+        android:layout_marginEnd="83dp"
+        android:layout_marginBottom="52dp"
+        android:alwaysDrawnWithCache="false"
+        android:animateLayoutChanges="false"
+        android:animationCache="true"
+        android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textExtend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="83dp"
+        android:layout_marginEnd="142dp"
+        android:layout_marginBottom="11dp"
+        android:text="Select enxtend time :"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerExtend"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

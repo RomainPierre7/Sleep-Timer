@@ -12,12 +12,11 @@ import android.widget.ImageButton
 import android.widget.TextView
 import com.example.sleeptimer.R.*
 
-
 class MainActivity : AppCompatActivity() {
 
     var startTimeMS: Long = 10000 * 60
 
-    var extendMS: Long = 10000 * 60
+   var extendMS: Long = 10000 * 60
 
     var timeMS: Long = startTimeMS
 
@@ -49,9 +48,11 @@ class MainActivity : AppCompatActivity() {
 
         val sharedEditor = sharedPreferences?.edit()
 
+        //var extendMS = intent.getLongExtra("EXTRA_EXTEND", 10000 * 60)
+
         startTimeMS = sharedPreferences?.getLong("startTime", 10000 * 60)!!
 
-        extendMS = sharedPreferences.getLong("extend", 10000 * 60)
+       extendMS = sharedPreferences.getLong("extend", 10000 * 60)
 
         timeMS = startTimeMS
 
