@@ -1,7 +1,10 @@
 package com.example.sleeptimer
 
+import android.Manifest
+import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import com.example.sleeptimer.R.*
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +44,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var countDownTimer: CountDownTimer
 
+    val manageBluetooth = BluetoothAdapter.getDefaultAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
@@ -47,8 +53,6 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = this?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
 
         val sharedEditor = sharedPreferences?.edit()
-
-        //var extendMS = intent.getLongExtra("EXTRA_EXTEND", 10000 * 60)
 
         startTimeMS = sharedPreferences?.getLong("startTime", 10000 * 60)!!
 
@@ -171,6 +175,20 @@ class MainActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 timer.text = "ENDED"
+                /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return
+                }*/
+                manageBluetooth.disable()
+
             }
         }.start()
     }
