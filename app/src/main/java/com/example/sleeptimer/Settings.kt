@@ -51,7 +51,6 @@ class Settings : AppCompatActivity() {
                         5 -> extendTime = 30000 * 60
                     }
                     sharedEditor?.putLong("extend", extendTime)
-                    sharedEditor?.commit()
                     sharedEditor?.putInt("lastExtend", position)
                     sharedEditor?.commit()
                 }

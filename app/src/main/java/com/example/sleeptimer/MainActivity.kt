@@ -99,8 +99,7 @@ class MainActivity : AppCompatActivity() {
             if (timeMS < 0){
                 timeMS = 0
             }
-            startTimeMS = timeMS
-            sharedEditor?.putLong("startTime", startTimeMS)
+            sharedEditor?.putLong("startTime", timeMS)
             sharedEditor?.commit()
             updateText()
         }
@@ -110,30 +109,37 @@ class MainActivity : AppCompatActivity() {
             if (timeMS < 0){
                 timeMS = 0
             }
-            startTimeMS = timeMS
-            sharedEditor?.putLong("startTime", startTimeMS)
+            sharedEditor?.putLong("startTime", timeMS)
             sharedEditor?.commit()
             updateText()
         }
 
         p5Button.setOnClickListener {
             timeMS += 5000 * 60
-            startTimeMS = timeMS
-            sharedEditor?.putLong("startTime", startTimeMS)
+            if (timeMS > 10 * 1000 * 3600){
+                timeMS = 10 * 1000 * 3600
+            }
+            sharedEditor?.putLong("startTime", timeMS)
             sharedEditor?.commit()
             updateText()
         }
 
         p10Button.setOnClickListener {
             timeMS += 10000 * 60
-            startTimeMS = timeMS
-            sharedEditor?.putLong("startTime", startTimeMS)
+            if (timeMS > 10 * 1000 * 3600){
+                timeMS = 10 * 1000 * 3600
+            }
+            sharedEditor?.putLong("startTime", timeMS)
             sharedEditor?.commit()
             updateText()
         }
 
         extendButton.setOnClickListener {
-            timeMS += extendMS
+            if (timeMS + extendMS > 10 * 1000 * 3600){
+                timeMS = 10 * 1000 * 3600
+            } else {
+                timeMS += extendMS
+            }
             countDownTimer.cancel()
             startTimer()
         }
@@ -141,20 +147,49 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateText() {
-        val minutes = (timeMS / 1000) / 60
-        val seconds = (timeMS / 1000) % 60
+        val heures = (timeMS / 1000) / 3600
+        val minutes = ((timeMS / 1000) - (heures * 3600)) / 60
+        val seconds = ((timeMS / 1000) - (heures * 3600) - (minutes * 60))% 60
 
-        if ((minutes < 10) && (seconds < 10)){
-            timer.text = "0$minutes:0$seconds"
+        if (heures < 1){
+            if ((minutes < 10) && (seconds < 10)){
+                timer.text = "0$minutes:0$seconds"
+            }
+            else if ((minutes < 10) && (seconds >= 10)){
+                timer.text = "0$minutes:$seconds"
+            }
+            else if ((minutes >= 10) && (seconds < 10)){
+                timer.text = "$minutes:0$seconds"
+            }
+            else{
+                timer.text = "$minutes:$seconds"
+            }
+        } else if (heures < 10){
+            if ((minutes < 10) && (seconds < 10)){
+                timer.text = "0$heures:0$minutes:0$seconds"
+            }
+            else if ((minutes < 10) && (seconds >= 10)){
+                timer.text = "0$heures:0$minutes:$seconds"
+            }
+            else if ((minutes >= 10) && (seconds < 10)){
+                timer.text = "0$heures:$minutes:0$seconds"
+            }
+            else{
+                timer.text = "0$heures:$minutes:$seconds"
         }
-        else if ((minutes < 10) && (seconds >= 10)){
-            timer.text = "0$minutes:$seconds"
-        }
-        else if ((minutes >= 10) && (seconds < 10)){
-            timer.text = "$minutes:0$seconds"
-        }
-        else{
-            timer.text = "$minutes:$seconds"
+        } else {
+            if ((minutes < 10) && (seconds < 10)){
+                timer.text = "$heures:0$minutes:0$seconds"
+            }
+            else if ((minutes < 10) && (seconds >= 10)){
+                timer.text = "$heures:0$minutes:$seconds"
+            }
+            else if ((minutes >= 10) && (seconds < 10)){
+                timer.text = "$heures:$minutes:0$seconds"
+            }
+            else{
+                timer.text = "$heures:$minutes:$seconds"
+            }
         }
     }
 
@@ -193,7 +228,7 @@ class MainActivity : AppCompatActivity() {
         }.start()
     }
 
-    private fun resetTimer() {
+fun resetTimer() {
         countDownTimer.cancel()
         timeMS = startTimeMS
         updateText()
