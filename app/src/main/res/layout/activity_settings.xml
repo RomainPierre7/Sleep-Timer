@@ -9,40 +9,135 @@
 
     <ImageButton
         android:id="@+id/home"
-        android:layout_width="100dp"
-        android:layout_height="55dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="40dp"
+        android:scaleType="fitXY"
+        android:background="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="?attr/homeAsUpIndicator" />
+        app:srcCompat="@drawable/home" />
 
     <Spinner
         android:id="@+id/spinnerExtend"
-        android:layout_width="245dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="83dp"
-        android:layout_marginEnd="83dp"
-        android:layout_marginBottom="52dp"
+        android:layout_width="116dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="147dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginBottom="104dp"
         android:alwaysDrawnWithCache="false"
-        android:animateLayoutChanges="false"
+        android:animateLayoutChanges="true"
         android:animationCache="true"
+        android:background="@drawable/gradient"
+        android:dropDownWidth="wrap_content"
+        android:fadeScrollbars="true"
+        android:gravity="center"
+        android:popupBackground="@drawable/night"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/home"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textExtend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="83dp"
-        android:layout_marginEnd="142dp"
-        android:layout_marginBottom="11dp"
-        android:text="Select enxtend time :"
+        android:layout_marginStart="113dp"
+        android:layout_marginEnd="113dp"
+        android:layout_marginBottom="20dp"
+        android:text="Select extend time :"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/spinnerExtend"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/musicToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginBottom="35dp"
+        android:text="ToggleButton"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textOn="ON"
+        android:textOff="OFF"
+        android:background="@drawable/toggleselector"/>
+
+    <ToggleButton
+        android:id="@+id/blueToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginBottom="35dp"
+        android:text="ToggleButton"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textOn="ON"
+        android:textOff="OFF"
+        android:background="@drawable/toggleselector"/>
+
+    <ToggleButton
+        android:id="@+id/wifiToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="162dp"
+        android:layout_marginEnd="161dp"
+        android:layout_marginBottom="35dp"
+        android:text="ToggleButton"
+        app:layout_constraintBottom_toTopOf="@+id/textExtend"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textOn="ON"
+        android:textOff="OFF"
+        android:background="@drawable/toggleselector"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="155dp"
+        android:layout_marginTop="69dp"
+        android:layout_marginEnd="155dp"
+        android:layout_marginBottom="20dp"
+        android:text="Stop music"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/musicToggle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
+        android:layout_marginEnd="140dp"
+        android:layout_marginBottom="20dp"
+        android:text="Stop bluetooth"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/blueToggle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="167dp"
+        android:layout_marginEnd="167dp"
+        android:layout_marginBottom="20dp"
+        android:text="Stop wifi"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/wifiToggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

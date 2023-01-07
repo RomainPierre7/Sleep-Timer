@@ -4,6 +4,7 @@ import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -13,6 +14,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.ToggleButton
 import androidx.core.app.ActivityCompat
 import com.example.sleeptimer.R.*
 
@@ -44,13 +46,15 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var countDownTimer: CountDownTimer
 
+    lateinit var sharedPreferences: SharedPreferences
+
     val manageBluetooth = BluetoothAdapter.getDefaultAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
 
-        val sharedPreferences = this?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
+        sharedPreferences = this?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)!!
 
         val sharedEditor = sharedPreferences?.edit()
 
@@ -99,7 +103,8 @@ class MainActivity : AppCompatActivity() {
             if (timeMS < 0){
                 timeMS = 0
             }
-            sharedEditor?.putLong("startTime", timeMS)
+            startTimeMS = timeMS
+            sharedEditor?.putLong("startTime", startTimeMS)
             sharedEditor?.commit()
             updateText()
         }
@@ -109,7 +114,8 @@ class MainActivity : AppCompatActivity() {
             if (timeMS < 0){
                 timeMS = 0
             }
-            sharedEditor?.putLong("startTime", timeMS)
+            startTimeMS = timeMS
+            sharedEditor?.putLong("startTime", startTimeMS)
             sharedEditor?.commit()
             updateText()
         }
@@ -119,7 +125,8 @@ class MainActivity : AppCompatActivity() {
             if (timeMS > 10 * 1000 * 3600){
                 timeMS = 10 * 1000 * 3600
             }
-            sharedEditor?.putLong("startTime", timeMS)
+            startTimeMS = timeMS
+            sharedEditor?.putLong("startTime", startTimeMS)
             sharedEditor?.commit()
             updateText()
         }
@@ -129,7 +136,8 @@ class MainActivity : AppCompatActivity() {
             if (timeMS > 10 * 1000 * 3600){
                 timeMS = 10 * 1000 * 3600
             }
-            sharedEditor?.putLong("startTime", timeMS)
+            startTimeMS = timeMS
+            sharedEditor?.putLong("startTime", startTimeMS)
             sharedEditor?.commit()
             updateText()
         }
@@ -210,20 +218,15 @@ class MainActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 timer.text = "ENDED"
-                /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return
-                }*/
-                manageBluetooth.disable()
+                if (sharedPreferences.getBoolean("toggleMusic", true)){
 
+                }
+                if (sharedPreferences.getBoolean("toggleBlue", true)){
+                    manageBluetooth.disable()
+                }
+                if (sharedPreferences.getBoolean("toggleWifi", true)){
+
+                }
             }
         }.start()
     }

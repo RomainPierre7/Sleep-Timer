@@ -5,12 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ImageButton
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 
 class Settings : AppCompatActivity() {
 
@@ -33,6 +28,18 @@ class Settings : AppCompatActivity() {
         var lastExtend = sharedPreferences!!.getInt("lastExtend", 1)
 
         val spinnerExtend = findViewById<Spinner>(R.id.spinnerExtend)
+
+        val toggleMusic = findViewById<ToggleButton>(R.id.musicToggle)
+
+        val toggleBlue = findViewById<ToggleButton>(R.id.blueToggle)
+
+        val toggleWifi = findViewById<ToggleButton>(R.id.wifiToggle)
+
+        toggleMusic.isChecked = sharedPreferences.getBoolean("toggleMusic", true)
+
+        toggleBlue.isChecked = sharedPreferences.getBoolean("toggleBlue", true)
+
+        toggleWifi.isChecked = sharedPreferences.getBoolean("toggleWifi", true)
 
         if (spinnerExtend != null) {
             val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, times)
@@ -64,6 +71,21 @@ class Settings : AppCompatActivity() {
 
         home.setOnClickListener {
             startActivity(backhome)
+        }
+
+        toggleMusic.setOnClickListener {
+            sharedEditor?.putBoolean("toggleMusic", toggleMusic.isChecked)
+            sharedEditor?.commit()
+        }
+
+        toggleBlue.setOnClickListener {
+            sharedEditor?.putBoolean("toggleBlue", toggleBlue.isChecked)
+            sharedEditor?.commit()
+        }
+
+        toggleWifi.setOnClickListener {
+            sharedEditor?.putBoolean("toggleWifi", toggleWifi.isChecked)
+            sharedEditor?.commit()
         }
     }
 }
