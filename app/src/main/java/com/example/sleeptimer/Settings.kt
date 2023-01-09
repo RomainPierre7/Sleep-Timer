@@ -1,6 +1,5 @@
 package com.example.sleeptimer
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,10 +17,6 @@ class Settings : AppCompatActivity() {
         val backhome = Intent(this, MainActivity::class.java)
 
         var extendTime: Long = 10000 * 60
-
-        val sharedPreferences = this?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
-
-        val sharedEditor = sharedPreferences?.edit()
 
         val times = resources.getStringArray(R.array.Languages)
 
@@ -66,8 +61,6 @@ class Settings : AppCompatActivity() {
                 }
             }
         }
-
-
 
         home.setOnClickListener {
             startActivity(backhome)
