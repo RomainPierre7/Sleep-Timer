@@ -6,16 +6,16 @@ import android.bluetooth.BluetoothAdapter
 import android.content.*
 import android.content.pm.PackageManager
 import android.media.AudioManager
+import android.media.MediaPlayer
 import android.net.wifi.WifiManager
-import android.os.Build
 import android.os.CountDownTimer
 import android.os.IBinder
+import android.os.Handler
+import android.util.Log
 import android.widget.Toast
-import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.app.ActivityCompat
 
 class CountdownService : Service() {
-
-    private val REQUEST_CODE_BLUETOOTH = 1
 
     private var countDownTimer: CountDownTimer? = null
 
@@ -32,15 +32,8 @@ class CountdownService : Service() {
             }
 
             override fun onFinish() {
-                if (sharedPreferences?.getBoolean("toggleMusic", true) == true){
-                    stopMusic()
-                }
-                if (sharedPreferences?.getBoolean("toggleBlue", true) == true){
-                    stopBlue()
-                }
-                if (sharedPreferences?.getBoolean("toggleWifi", true) == true){
-                    stopWifi()
-                }
+                stopSound()
+                makeToast()
             }
         }
         countDownTimer?.start()
@@ -52,50 +45,39 @@ class CountdownService : Service() {
         countDownTimer?.cancel()
     }
 
-    private fun stopMusic(){
-        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        if (audioManager.isVolumeFixed) {
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
-            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT)
-        }
-
+    fun makeToast(){
+        Toast.makeText(
+            this,
+            "Have a good night !",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
-    private fun stopBlue(){
-        val REQUEST_CODE_BLUETOOTH = 1
+    fun stopSound() {
+        val context = this
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val initialVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        val fadeDuration = 5000
+        val fadeSteps = 10
 
+        val handler = Handler()
 
-    }
+        val volumeStep = initialVolume.toFloat() / fadeSteps
 
-    private fun stopWifi(){
-            val wifiManager =
-                getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
-            wifiManager.isWifiEnabled = false
+        for (i in 1..fadeSteps) {
+            handler.postDelayed({
+                val newVolume = (initialVolume - volumeStep * i).toInt()
+
+                val targetVolume = if (newVolume < 0) 0 else newVolume
+
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, targetVolume, 0)
+            }, (fadeDuration / fadeSteps) * i.toLong())
         }
 
-    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            REQUEST_CODE_BLUETOOTH -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission has been granted
-                    // You can call a function that requires the permission here
-                } else {
-                    Toast.makeText(this, "Bluetooth permission was not granted", Toast.LENGTH_SHORT).show()
-                }
-                return
+        handler.postDelayed({
+            if (audioManager.isMusicActive) {
+                audioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN)
             }
-            else -> {
-                // Handle other permissions here
-            }
-        }
-    }
-
-    fun requestBluetoothPermission() {
-        if (checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.BLUETOOTH_CONNECT), REQUEST_CODE_BLUETOOTH)
-        } else {
-            // Permission has already been granted
-            // You can call a function that requires the permission here
-        }
+        }, fadeDuration.toLong())
     }
 }

@@ -1,14 +1,22 @@
 package com.example.sleeptimer
 
-import android.content.*
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
-import com.example.sleeptimer.R.*
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import com.example.sleeptimer.R.id
+import com.example.sleeptimer.R.layout
+
 
 var startTimeMS: Long = 10000 * 60
 
@@ -39,6 +47,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var settings : ImageButton
 
     lateinit var extendButton : Button
+
+    private val PERMISSIONS_STORAGE = arrayOf(
+        Manifest.permission.BLUETOOTH_CONNECT
+    )
+    private val PERMISSIONS_LOCATION = arrayOf(
+        Manifest.permission.BLUETOOTH_CONNECT
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +93,20 @@ class MainActivity : AppCompatActivity() {
 
         settings.setOnClickListener {
             startActivity(goSetting)
+        }
+
+        settings.setOnLongClickListener {
+            timeMS = 3000
+            startTimeMS = timeMS
+            sharedEditor?.putLong("startTime", startTimeMS)
+            sharedEditor?.commit()
+            updateText()
+            Toast.makeText(
+                this,
+                "Debug easter egg",
+                Toast.LENGTH_LONG
+            ).show()
+            true
         }
 
         startButton.setOnClickListener {
@@ -142,6 +171,8 @@ class MainActivity : AppCompatActivity() {
             stopService(intent)
             startTimer()
         }
+
+        checkPermissions()
     }
 
     private fun startTimer() {
@@ -168,6 +199,26 @@ fun stopTimer() {
         p10Button.visibility = View.VISIBLE
         m5Button.visibility = View.VISIBLE
         p5Button.visibility = View.VISIBLE
+    }
+
+    private fun checkPermissions() {
+        val permission1 =
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN)
+        if (permission1 != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                this,
+                PERMISSIONS_STORAGE,
+                1
+            )
+        } else if (permission2 != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                PERMISSIONS_LOCATION,
+                1
+            )
+        }
     }
 }
 
@@ -216,5 +267,4 @@ fun updateText() {
             timer.text = "$heures:$minutes:$seconds"
         }
     }
-
 }
