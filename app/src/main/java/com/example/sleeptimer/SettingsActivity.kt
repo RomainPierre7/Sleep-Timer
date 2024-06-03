@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 
-class Settings : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,15 +26,7 @@ class Settings : AppCompatActivity() {
 
         val toggleMusic = findViewById<ToggleButton>(R.id.musicToggle)
 
-        // val toggleBlue = findViewById<ToggleButton>(R.id.blueToggle)
-
-        // val toggleWifi = findViewById<ToggleButton>(R.id.wifiToggle)
-
         toggleMusic.isChecked = sharedPreferences.getBoolean("toggleMusic", true)
-
-        // toggleBlue.isChecked = sharedPreferences.getBoolean("toggleBlue", true)
-
-        // toggleWifi.isChecked = sharedPreferences.getBoolean("toggleWifi", true)
 
         if (spinnerExtend != null) {
             val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, times)
@@ -70,15 +62,5 @@ class Settings : AppCompatActivity() {
             sharedEditor?.putBoolean("toggleMusic", toggleMusic.isChecked)
             sharedEditor?.commit()
         }
-
-        /* toggleBlue.setOnClickListener {
-            sharedEditor?.putBoolean("toggleBlue", toggleBlue.isChecked)
-            sharedEditor?.commit()
-        }
-
-        toggleWifi.setOnClickListener {
-            sharedEditor?.putBoolean("toggleWifi", toggleWifi.isChecked)
-            sharedEditor?.commit()
-        } */
     }
 }

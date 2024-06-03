@@ -1,22 +1,25 @@
 package com.example.sleeptimer
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.example.sleeptimer.R.id
 import com.example.sleeptimer.R.layout
 
+var firstLaunch = true
 
 var startTimeMS: Long = 10000 * 60
 
@@ -48,20 +51,43 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var extendButton : Button
 
-    private val PERMISSIONS_STORAGE = arrayOf(
-        Manifest.permission.BLUETOOTH_CONNECT
-    )
-    private val PERMISSIONS_LOCATION = arrayOf(
-        Manifest.permission.BLUETOOTH_CONNECT
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
 
-        sharedPreferences = this?.getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)!!
+        fun BatteryOptimization(context: Context) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val packageName = context.packageName
+                val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                    val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                    intent.data = Uri.parse("package:$packageName")
+                    context.startActivity(intent)
+                }
+            }
+        }
 
+        fun firstLaunchDialog(context: Context) {
+            val builder = AlertDialog.Builder(context)
+            builder.setCancelable(false)
+            builder.setTitle("Welcome on Sleep Timer")
+            builder.setMessage("To ensure correct operation of the application, please disable battery optimization for this application.")
+
+            builder.setPositiveButton("Go to settings") { dialog, which ->
+                BatteryOptimization(context)
+            }
+            builder.show()
+        }
+
+        sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE)
         sharedEditor = sharedPreferences?.edit()!!
+
+        firstLaunch = sharedPreferences.getBoolean("firstLaunch", true)
+        if(firstLaunch == true){
+            firstLaunchDialog(this)
+            sharedEditor?.putBoolean("firstLaunch", false)
+            sharedEditor?.commit()
+        }
 
         startTimeMS = sharedPreferences?.getLong("startTime", 10000 * 60)!!
 
@@ -87,7 +113,7 @@ class MainActivity : AppCompatActivity() {
 
         settings = findViewById(id.settingButton)
 
-        val goSetting = Intent(this, Settings::class.java)
+        val goSetting = Intent(this, SettingsActivity::class.java)
 
         updateText()
 
@@ -171,8 +197,6 @@ class MainActivity : AppCompatActivity() {
             stopService(intent)
             startTimer()
         }
-
-        checkPermissions()
     }
 
     private fun startTimer() {
@@ -199,26 +223,6 @@ fun stopTimer() {
         p10Button.visibility = View.VISIBLE
         m5Button.visibility = View.VISIBLE
         p5Button.visibility = View.VISIBLE
-    }
-
-    private fun checkPermissions() {
-        val permission1 =
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN)
-        if (permission1 != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                this,
-                PERMISSIONS_STORAGE,
-                1
-            )
-        } else if (permission2 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this,
-                PERMISSIONS_LOCATION,
-                1
-            )
-        }
     }
 }
 
