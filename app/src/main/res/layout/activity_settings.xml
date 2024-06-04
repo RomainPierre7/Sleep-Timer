@@ -21,11 +21,11 @@
 
     <Spinner
         android:id="@+id/spinnerExtend"
-        android:layout_width="116dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="147dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="148dp"
-        android:layout_marginBottom="200dp"
         android:alwaysDrawnWithCache="false"
         android:animateLayoutChanges="true"
         android:animationCache="true"
@@ -35,36 +35,21 @@
         android:gravity="center"
         android:popupBackground="@drawable/night"
         android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@+id/home"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textExtend" />
 
     <TextView
         android:id="@+id/textExtend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="113dp"
-        android:layout_marginTop="165dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="113dp"
-        android:layout_marginBottom="20dp"
         android:text="Select extend time :"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerExtend"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/musicToggle" />
-
-    <ToggleButton
-        android:id="@+id/musicToggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="162dp"
-        android:background="@drawable/toggleselector"
-        android:text="ToggleButton"
-        android:textOff="OFF"
-        android:textOn="ON"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -24,10 +24,6 @@ class SettingsActivity : AppCompatActivity() {
 
         val spinnerExtend = findViewById<Spinner>(R.id.spinnerExtend)
 
-        val toggleMusic = findViewById<ToggleButton>(R.id.musicToggle)
-
-        toggleMusic.isChecked = sharedPreferences.getBoolean("toggleMusic", true)
-
         if (spinnerExtend != null) {
             val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, times)
             spinnerExtend.adapter = adapter
@@ -56,11 +52,6 @@ class SettingsActivity : AppCompatActivity() {
 
         home.setOnClickListener {
             startActivity(backhome)
-        }
-
-        toggleMusic.setOnClickListener {
-            sharedEditor?.putBoolean("toggleMusic", toggleMusic.isChecked)
-            sharedEditor?.commit()
         }
     }
 }
